@@ -1,21 +1,31 @@
 import "./App.css";
 import Wrapper from './components/Wrapper' // нужно создать
 import Circle from './components/Circle' // нужно создать
-import { useState } from "react";
+import { useReducer } from "react";
+
+function reducer(state, {type, payload}){
+  switch(type){
+    case "CHANGE_COLOR": {
+      return payload;
+    } default: {
+      return state;
+    }
+  }
+}
 
 export default function App() {
-  const [color, setColor] = useState(0)
+  const [state, dispatch] = useReducer(reducer, 0);
 
   function colorHandler(colorNum){
-    setColor(colorNum);
+    dispatch({type: "CHANGE_COLOR", payload: colorNum});
   }
 
   return (
-    <div className={`bg color-${color}`}>
+    <div className={`bg color-${state}`}>
       <Wrapper>
         {[1, 2, 3, 4, 5].map((num) => {
           return (
-            <Circle key={num} num={num} color={color} onChangeColor={colorHandler}/>
+            <Circle key={num} num={num} color={state} onChangeColor={colorHandler}/>
           );
         })}
       </Wrapper>
